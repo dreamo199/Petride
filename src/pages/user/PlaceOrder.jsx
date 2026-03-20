@@ -187,7 +187,7 @@ function PlaceOrder() {
                         </div>
 
                         <h3 className="text-[#fcfcfc] font-semibold text-sm">{fuel.name}</h3>
-                        <p className="text-[#555] text-xs mt-0.5 mb-3">{fuel.description || 'Standard grade'}</p>
+                        <p className="text-[#555] text-xs mt-0.5 mb-3 line-clamp-2">{fuel.description || 'Standard grade'}</p>
                         <p className="text-[#f2fd7d] font-bold text-sm">
                           ₦{fuel.price_per_liter.toLocaleString()}<span className="text-[#555] font-normal">/L</span>
                         </p>
