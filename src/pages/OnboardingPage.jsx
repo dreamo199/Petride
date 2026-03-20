@@ -128,10 +128,10 @@ function OnboardingPage() {
           <img 
             src={image} 
             alt="PetRide Fuel Delivery" 
-            className="mx-auto mb-12 max-w-md hover:scale-105 transition-transform duration-500" 
+            className="mx-auto mb-8 w-full max-w-[200px] sm:max-w-md hover:scale-105 transition-transform duration-500" 
           />
           
-          <h1 className="font-['Inter',sans-serif] font-bold text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight">
+          <h1 className="font-['Inter',sans-serif] font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 leading-tight">
             Fuel Delivery
             <br />
             <span className="text-[#f2fd7d] inline-block hover:scale-105 transition-transform">
@@ -139,7 +139,7 @@ function OnboardingPage() {
             </span>
           </h1>
           
-          <p className="text-lg md:text-xl text-[#888] max-w-2xl mx-auto mb-12 font-['Manrope',sans-serif] leading-relaxed">
+          <p className="text-base md:text-xl text-[#888] max-w-2xl mx-auto mb-12 font-['Manrope',sans-serif] leading-relaxed">
             Professional fuel delivery service connecting customers with verified drivers. 
             Order premium fuel anytime, anywhere with real-time tracking and instant updates.
           </p>
@@ -147,7 +147,7 @@ function OnboardingPage() {
           { !user ? 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Link to="/signup">
-              <button className="bg-[#f2fd7d] text-black px-8 py-4 rounded-full font-semibold text-base flex items-center gap-2 hover:opacity-90 transition-all hover:scale-105 shadow-xl shadow-[#f2fd7d]/30 group">
+              <button className="bg-[#f2fd7d] text-black px-8 py-4 rounded-full font-semibold text-base flex items-center gap-2 hover:opacity-90 transition-all hover:scale-105 shadow-xl shadow-[#f2fd7d]/20 group">
                 Get Started Now
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -172,7 +172,7 @@ function OnboardingPage() {
           }
 
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto py-8" data-aos="fade-up">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-4xl mx-auto py-8 w-full" data-aos="fade-up">
             {[
               { value: "1,200+", label: "Happy Customers", icon: Users },
               { value: "350+", label: "Verified Drivers", icon: Truck },
@@ -295,13 +295,13 @@ function OnboardingPage() {
       {/* CTA Section */}
       <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="relative bg-gradient-to-br from-[#f2fd7d]/10 via-[#f2fd7d]/5 to-transparent border border-[#f2fd7d]/30 rounded-3xl p-12 md:p-16 overflow-hidden">
+          <div className="relative bg-gradient-to-br from-[#f2fd7d]/10 via-[#f2fd7d]/5 to-transparent border border-[#f2fd7d]/30 rounded-3xl p-6 sm:p-12 md:p-16 overflow-hidden">
             
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#f2fd7d]/5 rounded-full blur-3xl" />
             
             <div className="relative z-10 text-center">
-              <h2 className="font-['Inter',sans-serif] font-bold text-3xl md:text-5xl mb-4">
+              <h2 className="font-['Inter',sans-serif] font-bold text-2xl sm:text-3xl md:text-5xl mb-4">
                 Ready to Get Started?
               </h2>
               <p className="text-[#888] text-lg mb-8 max-w-2xl mx-auto">
@@ -326,10 +326,10 @@ function OnboardingPage() {
         <div className="max-w-6xl mx-auto">
           
           {/* Footer Content */}
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             
             {/* Brand */}
-            <div className="md:col-span-2">
+            <div className="col-span-2 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-[#f2fd7d] to-[#d4e157] rounded-xl flex items-center justify-center">
                   <Truck className="w-5 h-5 text-black" />
