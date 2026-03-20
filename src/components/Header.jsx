@@ -96,17 +96,53 @@ function Header() {
                 className={`text-[#b2beb5] transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} 
               />
             </button>
-
+            
             {/* Dropdown Menu */}
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-[#343434] border border-[#4a4a4a] rounded-lg shadow-xl overflow-hidden z-50 animate-fadeIn">
-                <button
-                  onClick={signOut}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white hover:bg-[#4a4a4a] transition-colors"
-                >
-                  <LogOut size={16} />
-                  <span>Sign Out</span>
-                </button>
+              <div className="absolute right-0 mt-2 w-64 bg-[#0a0a0a] border border-[#343434] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50">
+                
+                {/* User Info */}
+                <div className="px-4 py-4 border-b border-[#1f1f1f]">
+                  <div className="flex items-center gap-3">
+                    <img src={User} alt="avatar" className="w-10 h-10 rounded-full object-cover ring-2 ring-[#f2fd7d]/30" />
+                    <div>
+                      <p className="text-white font-semibold text-sm">{user?.user.first_name || 'User'}</p>
+                      <p className="text-[#555] text-xs">{user?.user.email || 'user@example.com'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-2">
+                  {[
+                    { icon: UserCircle, label: 'My Profile', path: 'profile' },
+                    { icon: Package, label: 'My Orders', path: '/customer/orders' },
+                    { icon: BarChart3, label: 'Analytics', path: '/customer/analytics' },
+                    { icon: Settings, label: 'Settings', path: '/settings' },
+                    { icon: HelpCircle, label: 'Support', path: '/support' },
+                  ].map(({ icon: Icon, label, path }) => (
+                    <Link
+                      key={label}
+                      to={path}
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#888] hover:text-white hover:bg-[#141414] transition-all group"
+                    >
+                      <Icon size={16} className="group-hover:text-[#f2fd7d] transition-colors" />
+                      <span>{label}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Divider + Sign Out */}
+                <div className="border-t border-[#1f1f1f] py-2">
+                  <button
+                    onClick={signOut}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/5 transition-all group"
+                  >
+                    <LogOut size={16} />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
