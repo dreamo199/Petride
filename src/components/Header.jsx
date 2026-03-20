@@ -1,8 +1,7 @@
 import { Search, Bell, Moon, Sun, LogOut, ChevronDown, X } from "lucide-react";
-import { useTheme } from "../contexts/ThemeContext";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import User from "../assets/user.png";
+import User from "../assets/User.png";
 
 function Header() {
   const { user, logout } = useAuth();
