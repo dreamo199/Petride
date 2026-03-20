@@ -117,8 +117,6 @@ function Header() {
                 <div className="py-2">
                   {[
                     { icon: UserCircle, label: 'My Profile', path: 'profile' },
-                    { icon: Package, label: 'My Orders', path: '/customer/orders' },
-                    { icon: BarChart3, label: 'Analytics', path: '/customer/analytics' },
                     { icon: Settings, label: 'Settings', path: '/settings' },
                     { icon: HelpCircle, label: 'Support', path: '/support' },
                   ].map(({ icon: Icon, label, path }) => (

@@ -8,7 +8,7 @@ function DashboardLayout({ role }) {
   const mobileNav = role === 'customer' ? [
     { label: 'Home', icon: LayoutDashboard, path: '/customer/dashboard' },
     { label: 'Order', icon: Package, path: '/customer/new-order' },
-    { label: 'Orders', icon: History, path: '/customer/orders' },
+    { label: 'My Orders', icon: History, path: '/customer/orders' },
     { label: 'Analytics', icon: BarChart3, path: '/customer/analytics' },
     { label: 'Profile', icon: User, path: 'profile' },
   ] : role === 'driver' ? [
