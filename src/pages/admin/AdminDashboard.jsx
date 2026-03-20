@@ -1,5 +1,4 @@
 import { Users, Truck, DollarSign } from 'lucide-react';
-import StatsCard from '../../components/StatsCard';
 import OrdersTable from '../../components/OrdersTable';
 
 const mockOrders = [
@@ -23,25 +22,6 @@ function AdminDashboard() {
             Welcome back, Edgar
           </p>
         </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="flex gap-6 mb-10">
-        <StatsCard
-          title="Total customers"
-          value="812"
-          Icon={Users}
-        />
-        <StatsCard
-          title="Total drivers"
-          value="201"
-          Icon={Truck}
-        />
-        <StatsCard
-          title="Total revenue"
-          value="$400,000"
-          Icon={DollarSign}
-        />
       </div>
 
       {/* Orders Table */}
