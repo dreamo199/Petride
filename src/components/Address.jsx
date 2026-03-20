@@ -238,7 +238,8 @@ export function AddressMapInput({ onAddressChange, initialAddress = '' }) {
       {/* Address Input */}
       <div>
         <div className="relative">
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className='flex gap-2 flex-1'>
             <div className="flex-1 relative">
               <input
                 type="text"
@@ -268,6 +269,7 @@ export function AddressMapInput({ onAddressChange, initialAddress = '' }) {
                 </>
               )}
             </button>
+            </div>
 
             <button
               onClick={getCurrentLocation}

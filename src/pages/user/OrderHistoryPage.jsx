@@ -71,7 +71,7 @@ function OrdersHistoryPage() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-1">
+        <h1 className="font-['Inter',sans-serif] font-bold text-2xl sm:text-3xl text-[#fcfcfc] mb-1">
           My Orders
         </h1>
         <p className="font-['Manrope',sans-serif] text-[#b2beb5] text-sm">
@@ -81,7 +81,7 @@ function OrdersHistoryPage() {
 
       {/* Filters */}
       <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-4">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
 
           {/* Search */}
           <div className="relative flex-1">
@@ -165,7 +165,8 @@ function OrdersHistoryPage() {
 
           {/* Export */}
           <button className="
-            flex items-center gap-2 h-10 px-4 rounded-lg
+            hidden sm:flex
+            items-center gap-2 h-10 px-4 rounded-lg
             bg-[#141414] border border-[#343434]
             text-[#888] text-sm
             hover:text-white hover:border-[#555]
@@ -213,7 +214,7 @@ function OrdersHistoryPage() {
       {/* Orders Table */}
       <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto w-full">
-          <div classname="min-w-[700px]">
+          <div className="min-w-[700px]">
           <table className="w-full">
             <thead className="bg-[#111] border-b border-[#343434]">
               <tr>

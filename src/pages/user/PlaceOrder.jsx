@@ -82,7 +82,7 @@ function PlaceOrder() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
 
         {/* Header */}
@@ -161,7 +161,7 @@ function PlaceOrder() {
                         disabled={!fuel.is_available}
                         onClick={() => setOrderData((prev) => ({ ...prev, fuel_type: fuel.id }))}
                         className={`
-                          relative p-5 rounded-xl border text-left
+                          relative p-3 sm:p-5 rounded-xl border text-left
                           transition-all duration-200
                           ${isSelected
                             ? 'border-[#f2fd7d] bg-[#f2fd7d]/5'

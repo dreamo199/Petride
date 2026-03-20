@@ -127,7 +127,7 @@ function CustomerAnalyticsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
@@ -150,7 +150,7 @@ function CustomerAnalyticsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-5 hover:border-[#f2fd7d]/30 transition-all">
+        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-3 sm:p-5 hover:border-[#f2fd7d]/30 transition-all">
           <div className="flex items-center justify-between mb-4">
             <div className="w-10 h-10 bg-[#f2fd7d]/10 rounded-xl flex items-center justify-center">
               <TrendingUp className="w-5 h-5 text-[#f2fd7d]" />
@@ -216,7 +216,7 @@ function CustomerAnalyticsPage() {
       </div>
 
       {/* Charts row: Spending + Pie */}
-      <div className="grid lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Spending Chart */}
         <div className="lg:col-span-2 bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
           <div className="flex items-center justify-between mb-6">
@@ -263,7 +263,7 @@ function CustomerAnalyticsPage() {
         </div>
 
         {/* Insight Cards */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col items-start gap-4">
           {[
             { label: 'Favorite Fuel', value: stats.favourite_fuel || 'N/A', icon: Fuel, color: '#f2fd7d' },
             { label: 'Most Active Day', value: 'Saturday', sub: '8 orders placed', icon: TrendingUp, color: '#3b82f6' },
@@ -328,10 +328,10 @@ function CustomerAnalyticsPage() {
       </div>
 
       {/* Orders Bar Chart + Insights */}
-      <div className="grid lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Bar Chart */}
         <div className="lg:col-span-2 bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
             <div>
               <h2 className="text-[#fcfcfc] font-semibold text-lg">Orders Activity</h2>
               <p className="text-[#b2beb5] text-sm mt-1">Number of orders placed</p>
