@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { LayoutDashboard, Package, History, BarChart3, User } from 'lucide-react';
+import { LayoutDashboard, Package, History, BarChart3, User, Truck } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
 function DashboardLayout({ role }) {
@@ -11,6 +11,12 @@ function DashboardLayout({ role }) {
     { label: 'Orders', icon: History, path: '/customer/orders' },
     { label: 'Analytics', icon: BarChart3, path: '/customer/analytics' },
     { label: 'Profile', icon: User, path: 'profile' },
+  ] : role === 'driver' ? [
+    { label: "Dashboard", icon: LayoutDashboard, path: "/driver/dashboard" },
+    { label: "Available Orders", icon: Package, path: "/driver/available-orders" },
+    { label: "Active Delivery", icon: Truck, path: "/driver/active-order" },
+    { label: "Earnings", icon: BarChart3, path: "/driver/earnings" },
+    { label: "Profile", icon: User, path: "profile" },
   ] : [];
 
   return (
@@ -28,22 +34,26 @@ function DashboardLayout({ role }) {
 
         {/* Mobile Bottom Nav */}
         {mobileNav.length > 0 && (
-          <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-[#343434] flex items-center justify-around px-2 py-2 z-50">
-            {mobileNav.map(({ label, icon: Icon, path }) => (
-              <NavLink
-                key={label}
-                to={path}
-                className={({ isActive }) =>
-                  `flex flex-col items-center gap-1 px-3 py-1 rounded-lg transition-all ${
-                    isActive ? 'text-[#f2fd7d]' : 'text-[#888]'
-                  }`
-                }
-              >
-                <Icon size={20} />
-                <span className="text-[10px] font-medium">{label}</span>
-              </NavLink>
-            ))}
-          </nav>
+          <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
+            <nav className="bg-[#0a0a0a]/90 backdrop-blur-xl border border-[#343434] rounded-2xl flex items-center justify-around px-2 py-2 shadow-2xl shadow-black/50">
+              {mobileNav.map(({ label, icon: Icon, path }) => (
+                <NavLink
+                  key={label}
+                  to={path}
+                  className={({ isActive }) =>
+                    `flex flex-col items-center gap-1 px-3 py-2 rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-[#f2fd7d]/10 text-[#f2fd7d]'
+                        : 'text-[#666] hover:text-[#888]'
+                    }`
+                  }
+                >
+                  <Icon size={20} />
+                  <span className="text-[10px] font-medium">{label}</span>
+                </NavLink>
+              ))}
+            </nav>
+          </div>
         )}
       </div>
     </div>
