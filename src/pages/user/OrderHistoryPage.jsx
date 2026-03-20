@@ -212,7 +212,8 @@ function OrdersHistoryPage() {
 
       {/* Orders Table */}
       <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-full">
+          <div classname="min-w-[700px]">
           <table className="w-full">
             <thead className="bg-[#111] border-b border-[#343434]">
               <tr>
@@ -286,6 +287,7 @@ function OrdersHistoryPage() {
               ))}
             </tbody>
           </table>
+        </div>
         </div>
 
         {/* Empty State */}

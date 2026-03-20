@@ -56,7 +56,7 @@ function Sidebar({ role }) {
       onMouseLeave={() => setIsExpanded(false)}
       className="
         bg-[#0a0a0a]
-        flex flex-col
+        hidden md:flex flex-col
         sticky top-0 left-0
         h-screen
         overflow-hidden

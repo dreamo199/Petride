@@ -40,10 +40,10 @@ function Header() {
 
   return (
     <>
-      <div className="bg-black flex items-center justify-between px-10 py-5 border-b border-[#343434]/30">
+      <div className="bg-black flex items-center justify-between px-4 md:px-10 py-5 border-b border-[#343434]/30">
         {/* Search Bar */}
         <div 
-          className={`flex items-center gap-3 bg-black border rounded-lg px-4 py-2.5 w-[380px] transition-all duration-300 ${
+          className={`flex items-center gap-3 bg-black border rounded-lg px-4 py-2.5 w-full max-w-[380px] transition-all duration-300 ${
             searchFocused 
               ? 'border-[#f2fd7d] shadow-lg shadow-[#f2fd7d]/10' 
               : 'border-[#343434] hover:border-[#4a4a4a]'
@@ -83,7 +83,7 @@ function Header() {
                 alt="User avatar"
                 className="w-7 h-7 rounded-full object-cover ring-2 ring-transparent hover:ring-[#f2fd7d] transition-all duration-300"
               />
-              <div className="leading-tight text-left">
+              <div className="leading-tight text-left hidden md:block">
                 <p className="text-sm font-semibold text-white">
                   {user?.user.first_name || "User"}
                 </p>

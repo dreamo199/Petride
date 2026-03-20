@@ -84,7 +84,7 @@ function CustomerDashboard() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 overflow-x-hidden">
       {/* Top row: Welcome + Quick Order */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Welcome Card */}
