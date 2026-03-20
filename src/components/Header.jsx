@@ -2,6 +2,7 @@ import { Search, Bell, LogOut, ChevronDown, X, UserCircle, Package, BarChart3, S
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import User from "../assets/User.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   const { user, logout } = useAuth();
