@@ -1,4 +1,4 @@
-import { Search, Bell, Moon, Sun, LogOut, ChevronDown, X } from "lucide-react";
+import { Search, Bell, LogOut, ChevronDown, X, UserCircle, Package, BarChart3, Settings, HelpCircle } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import User from "../assets/User.png";
@@ -96,7 +96,7 @@ function Header() {
                 className={`text-[#b2beb5] transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} 
               />
             </button>
-            
+
             {/* Dropdown Menu */}
             {showUserMenu && (
               <div className="absolute right-0 mt-2 w-64 bg-[#0a0a0a] border border-[#343434] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50">
