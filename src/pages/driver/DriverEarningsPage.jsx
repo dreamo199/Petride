@@ -1,42 +1,38 @@
 import { useState, useEffect } from 'react';
-import { DollarSign, TrendingUp, Calendar, Download, RefreshCw, ArrowUpRight, ArrowDownRight } from 'lucide-react';
-import { StatsCard } from '@/app/components/dashboard/StatsCard';
-import { Button } from '@/app/components/ui/button';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { driverApi } from '@/app/services/driverApi';
+import { DollarSign, TrendingUp, Calendar, Download, RefreshCw, ArrowUpRight, ArrowDownRight, Package } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { driverService } from '../../services/driver';
 import { toast } from 'sonner';
 
+const CustomTooltip = ({ active, payload, label }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl px-4 py-3 shadow-xl">
+      <p className="text-[#b2beb5] text-xs mb-1">{label}</p>
+      <p className="text-white font-semibold text-sm">
+        ₦{Number(payload[0].value).toLocaleString()}
+      </p>
+    </div>
+  );
+};
+
 function DriverEarningsPage() {
-  const [earnings, setEarnings] = useState(null);
-  const [chartData, setChartData] = useState([]);
-  const [transactions, setTransactions] = useState([]);
+  const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [availableBalance, setAvailableBalance] = useState(0);
-  const [pendingBalance, setPendingBalance] = useState(0);
-  const [chartPeriod, setChartPeriod] = useState(7);
+  const [chartPeriod, setChartPeriod] = useState('8W');
 
   useEffect(() => {
-    fetchAllData();
+    fetchData();
   }, []);
 
-  const fetchAllData = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const [earningsData, chartData, transactionsData, statsData] = await Promise.all([
-        driverApi.getEarnings(),
-        driverApi.getEarningsChart(chartPeriod),
-        driverApi.getTransactions({ limit: 10 }),
-        driverApi.getStats(),
-      ]);
-
-      setEarnings(earningsData);
-      setChartData(chartData);
-      setTransactions(transactionsData.results || transactionsData);
-      setAvailableBalance(statsData.available_balance || 0);
-      setPendingBalance(statsData.pending_balance || 0);
+      const data = await driverService.getDriverAnalytics();
+      setAnalytics(data);
     } catch (error) {
-      console.error('Error fetching earnings data:', error);
+      console.error('Error fetching earnings:', error);
       toast.error('Failed to load earnings data');
     } finally {
       setLoading(false);
@@ -45,33 +41,23 @@ function DriverEarningsPage() {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetchAllData();
+    await fetchData();
     setRefreshing(false);
     toast.success('Data refreshed');
   };
 
-  const handleRequestPayout = async () => {
-    if (availableBalance <= 0) {
-      toast.error('No balance available for payout');
-      return;
-    }
-
-    try {
-      await driverApi.requestPayout(availableBalance);
-      toast.success('Payout request submitted successfully');
-      fetchAllData();
-    } catch (error) {
-      console.error('Error requesting payout:', error);
-      toast.error('Failed to request payout');
-    }
-  };
-
   const handleExport = () => {
+    if (!analytics?.weekly_breakdown) return;
     const csv = [
-      ['Date', 'Order', 'Amount', 'Status'],
-      ...transactions.map(t => [t.date, t.order_number, t.amount, t.status])
+      ['Week', 'Deliveries', 'Earnings', 'Distance'],
+      ...analytics.weekly_breakdown.map(w => [
+        new Date(w.week).toLocaleDateString(),
+        w.deliveries,
+        w.earnings,
+        w.distance
+      ])
     ].map(row => row.join(',')).join('\n');
-    
+
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -80,19 +66,14 @@ function DriverEarningsPage() {
     a.click();
   };
 
-  const formatCurrency = (amount) => {
-    return `₦${amount.toLocaleString('en-NG', { minimumFractionDigits: 0 })}`;
-  };
+  const formatCurrency = (amount) =>
+    `₦${Number(amount || 0).toLocaleString('en-NG', { minimumFractionDigits: 0 })}`;
 
-  const formatTrend = (trend) => {
-    const isPositive = trend >= 0;
-    return (
-      <span className={`flex items-center gap-1 text-sm ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-        {isPositive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-        {Math.abs(trend)}%
-      </span>
-    );
-  };
+  const chartData = analytics?.weekly_breakdown?.map(w => ({
+    week: new Date(w.week).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    earnings: w.earnings,
+    deliveries: w.deliveries,
+  })) || [];
 
   if (loading) {
     return (
@@ -105,247 +86,175 @@ function DriverEarningsPage() {
     );
   }
 
+  const totalEarnings = analytics?.earnings?.total_earnings || 0;
+  const avgPerDelivery = analytics?.earnings?.average_per_delivery || 0;
+  const recentEarnings = analytics?.recent_performance?.earnings_last_30_days || 0;
+  const recentDeliveries = analytics?.recent_performance?.deliveries_last_30_days || 0;
+  const totalDeliveries = analytics?.overview?.total_deliveries || 0;
+  const totalDistance = analytics?.performance?.total_distance_km || 0;
+  const rating = analytics?.ratings?.current_rating || 0;
+
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6 pb-24 lg:pb-6">
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
+          <h1 className="font-technor font-bold text-2xl sm:text-3xl text-[#fcfcfc] mb-1">
             Earnings Dashboard
           </h1>
-          <p className="font-['Manrope',sans-serif] text-[#b2beb5]">
-            Track your earnings, payouts, and transaction history
+          <p className="font-switzer text-[#b2beb5]">
+            Track your earnings, deliveries, and performance
           </p>
         </div>
-        <Button
-          onClick={handleRefresh}
-          disabled={refreshing}
-          variant="outline"
-          className="border-[#343434] text-[#fcfcfc] hover:bg-[#141414]"
-        >
-          <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleExport}
+            className="border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] rounded-lg px-4 py-2 text-sm font-medium transition-all inline-flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Export</span>
+          </button>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] rounded-lg px-4 py-2 text-sm font-medium transition-all inline-flex items-center gap-2 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
+        </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <DollarSign className="w-10 h-10 text-[#f2fd7d]" />
-            {earnings && formatTrend(earnings.todayTrend)}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Earnings', value: formatCurrency(totalEarnings), icon: DollarSign, trend: '+12%' },
+          { label: 'Last 30 Days', value: formatCurrency(recentEarnings), icon: Calendar, trend: '+8%' },
+          { label: 'Avg Per Delivery', value: formatCurrency(avgPerDelivery), icon: TrendingUp, trend: '+5%' },
+          { label: 'Total Deliveries', value: totalDeliveries, icon: Package, trend: `+${recentDeliveries}` },
+        ].map(({ label, value, icon: Icon, trend }) => (
+          <div key={label} className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-4 sm:p-5 hover:border-[#f2fd7d]/30 transition-all">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-10 h-10 bg-[#f2fd7d]/10 rounded-xl flex items-center justify-center">
+                <Icon className="w-5 h-5 text-[#f2fd7d]" />
+              </div>
+              <span className="flex items-center gap-1 text-xs text-green-400">
+                <ArrowUpRight className="w-3 h-3" />
+                {trend}
+              </span>
+            </div>
+            <p className="font-switzer text-[#b2beb5] text-xs mb-2">{label}</p>
+            <p className="font-technor font-bold text-xl sm:text-2xl text-[#fcfcfc]">{value}</p>
           </div>
-          <p className="text-[#b2beb5] text-sm mb-2">Today's Earnings</p>
-          <p className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc]">
-            {earnings ? formatCurrency(earnings.today) : '₦0'}
-          </p>
-        </div>
-
-        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <TrendingUp className="w-10 h-10 text-[#f2fd7d]" />
-            {earnings && formatTrend(earnings.weekTrend)}
-          </div>
-          <p className="text-[#b2beb5] text-sm mb-2">This Week</p>
-          <p className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc]">
-            {earnings ? formatCurrency(earnings.week) : '₦0'}
-          </p>
-        </div>
-
-        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <Calendar className="w-10 h-10 text-[#f2fd7d]" />
-            {earnings && formatTrend(earnings.monthTrend)}
-          </div>
-          <p className="text-[#b2beb5] text-sm mb-2">This Month</p>
-          <p className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc]">
-            {earnings ? formatCurrency(earnings.month) : '₦0'}
-          </p>
-        </div>
-
-        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <TrendingUp className="w-10 h-10 text-[#f2fd7d]" />
-            {earnings && formatTrend(earnings.totalTrend)}
-          </div>
-          <p className="text-[#b2beb5] text-sm mb-2">Total Lifetime</p>
-          <p className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc]">
-            {earnings ? formatCurrency(earnings.total) : '₦0'}
-          </p>
-        </div>
+        ))}
       </div>
 
-      {/* Chart Section */}
-      <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="font-['Inter',sans-serif] font-bold text-xl text-[#fcfcfc]">
-            Earnings Trend
-          </h2>
-          <div className="flex gap-2">
-            <Button
-              variant={chartPeriod === 7 ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setChartPeriod(7)}
-              className={chartPeriod === 7 ? 'bg-[#f2fd7d] text-black' : 'border-[#343434] text-[#fcfcfc]'}
-            >
-              7 Days
-            </Button>
-            <Button
-              variant={chartPeriod === 30 ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setChartPeriod(30)}
-              className={chartPeriod === 30 ? 'bg-[#f2fd7d] text-black' : 'border-[#343434] text-[#fcfcfc]'}
-            >
-              30 Days
-            </Button>
+      {/* Chart */}
+      <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-4 sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <div>
+            <h2 className="font-satoshi font-semibold text-lg text-[#fcfcfc]">Earnings Trend</h2>
+            <p className="font-switzer text-[#b2beb5] text-sm mt-1">Weekly breakdown</p>
+          </div>
+          <div className="flex items-center gap-1 bg-[#111] border border-[#343434] rounded-lg p-1">
+            {['4W', '8W'].map((p) => (
+              <button
+                key={p}
+                onClick={() => setChartPeriod(p)}
+                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  chartPeriod === p
+                    ? 'bg-[#f2fd7d] text-black'
+                    : 'text-[#b2beb5] hover:text-white'
+                }`}
+              >
+                {p}
+              </button>
+            ))}
           </div>
         </div>
-        <ResponsiveContainer width="100%" height={350}>
-          <LineChart data={chartData}>
+
+        <ResponsiveContainer width="100%" height={280}>
+          <AreaChart data={chartPeriod === '4W' ? chartData.slice(-4) : chartData}>
             <defs>
-              <linearGradient id="earningsGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f2fd7d" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#f2fd7d" stopOpacity={0}/>
+              <linearGradient id="earningsGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f2fd7d" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#f2fd7d" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#343434" />
-            <XAxis 
-              dataKey="date" 
-              stroke="#b2beb5"
-              style={{ fontSize: '12px' }}
-            />
-            <YAxis 
-              stroke="#b2beb5"
-              style={{ fontSize: '12px' }}
-              tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: '#0a0a0a',
-                border: '1px solid #343434',
-                borderRadius: '12px',
-                color: '#fcfcfc',
-              }}
-              formatter={(value) => [formatCurrency(value), 'Earnings']}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="earnings" 
-              stroke="#f2fd7d" 
-              strokeWidth={3}
-              fill="url(#earningsGradient)"
-              dot={{ fill: '#f2fd7d', r: 4 }}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
+            <CartesianGrid strokeDasharray="3 3" stroke="#343434" vertical={false} />
+            <XAxis dataKey="week" axisLine={false} tickLine={false} tick={{ fill: '#b2beb5', fontSize: 12 }} />
+            <YAxis axisLine={false} tickLine={false} tick={{ fill: '#b2beb5', fontSize: 12 }} tickFormatter={(v) => `₦${(v / 1000).toFixed(0)}k`} />
+            <Tooltip content={<CustomTooltip />} />
+            <Area type="monotone" dataKey="earnings" stroke="#f2fd7d" strokeWidth={3} fill="url(#earningsGrad)" dot={false} activeDot={{ r: 5, fill: '#f2fd7d', stroke: '#0a0a0a', strokeWidth: 2 }} />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Payout Section */}
-      <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="font-['Inter',sans-serif] font-bold text-xl text-[#fcfcfc]">
-            Balance & Payouts
-          </h2>
-          <Button 
-            onClick={handleRequestPayout}
-            disabled={availableBalance <= 0}
-            className="bg-[#f2fd7d] text-black hover:bg-[#f2fd7d]/90 disabled:opacity-50"
-          >
-            Request Payout
-          </Button>
+      {/* Performance + Rating */}
+      <div className="grid sm:grid-cols-3 gap-4">
+        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-5 hover:border-[#f2fd7d]/30 transition-all">
+          <p className="font-switzer text-[#b2beb5] text-xs mb-2">Total Distance</p>
+          <p className="font-technor font-bold text-2xl text-[#fcfcfc]">{Number(totalDistance).toFixed(1)} km</p>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-gradient-to-br from-[#f2fd7d]/10 to-transparent border border-[#f2fd7d]/20 rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#f2fd7d]/20 rounded-full flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-[#f2fd7d]" />
-              </div>
-              <p className="text-[#b2beb5] text-sm">Available for Payout</p>
-            </div>
-            <p className="font-['Inter',sans-serif] font-bold text-4xl text-[#f2fd7d]">
-              {formatCurrency(availableBalance)}
-            </p>
-          </div>
-          <div className="bg-[#141414] border border-[#343434] rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 bg-[#343434] rounded-full flex items-center justify-center">
-                <RefreshCw className="w-5 h-5 text-[#b2beb5]" />
-              </div>
-              <p className="text-[#b2beb5] text-sm">Pending Clearance</p>
-            </div>
-            <p className="font-['Inter',sans-serif] font-bold text-4xl text-[#fcfcfc]">
-              {formatCurrency(pendingBalance)}
-            </p>
-            <p className="text-xs text-[#b2beb5] mt-2">Clears in 2-3 business days</p>
-          </div>
+        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-5 hover:border-[#f2fd7d]/30 transition-all">
+          <p className="font-switzer text-[#b2beb5] text-xs mb-2">Driver Rating</p>
+          <p className="font-technor font-bold text-2xl text-[#f2fd7d]">⭐ {Number(rating).toFixed(1)}</p>
+        </div>
+        <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-5 hover:border-[#f2fd7d]/30 transition-all">
+          <p className="font-switzer text-[#b2beb5] text-xs mb-2">Completion Rate</p>
+          <p className="font-technor font-bold text-2xl text-green-400">
+            {totalDeliveries > 0
+              ? `${Math.round((totalDeliveries / (totalDeliveries + (analytics?.overview?.cancelled_deliveries || 0))) * 100)}%`
+              : 'N/A'}
+          </p>
         </div>
       </div>
 
-      {/* Transaction History */}
-      <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="font-['Inter',sans-serif] font-bold text-xl text-[#fcfcfc]">
-              Recent Transactions
-            </h2>
-            <p className="text-sm text-[#b2beb5] mt-1">
-              Last {transactions.length} transactions
-            </p>
-          </div>
-          <Button 
-            onClick={handleExport}
-            variant="outline" 
-            className="border-[#343434] text-[#fcfcfc] hover:bg-[#141414]"
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Export CSV
-          </Button>
+      {/* Weekly Breakdown Table */}
+      <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-5">
+          <h2 className="font-satoshi font-semibold text-xl text-[#fcfcfc]">Weekly Breakdown</h2>
         </div>
-        <div className="space-y-3">
-          {transactions.length > 0 ? (
-            transactions.map((transaction) => (
-              <div 
-                key={transaction.id} 
-                className="flex items-center justify-between bg-[#141414] border border-[#343434] rounded-xl p-4 hover:border-[#f2fd7d]/30 transition-all"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-[#f2fd7d]/10 rounded-full flex items-center justify-center">
-                    <DollarSign className="w-5 h-5 text-[#f2fd7d]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[#fcfcfc] mb-1">{transaction.order_number}</p>
-                    <p className="text-sm text-[#b2beb5]">
-                      {new Date(transaction.date).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg text-[#f2fd7d]">
-                    +{formatCurrency(transaction.amount)}
-                  </p>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    transaction.status === 'Completed' ? 'bg-green-500/20 text-green-400' :
-                    transaction.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-400' :
-                    'bg-gray-500/20 text-gray-400'
-                  }`}>
-                    {transaction.status}
-                  </span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="text-center py-12">
-              <DollarSign className="w-12 h-12 text-[#343434] mx-auto mb-3" />
-              <p className="text-[#b2beb5]">No transactions yet</p>
-            </div>
-          )}
+        <div className="border-t border-[#343434]" />
+        <div className="overflow-x-auto w-full">
+          <div className="min-w-[500px]">
+            <table className="w-full">
+              <thead className="bg-[#111] border-b border-[#343434]">
+                <tr>
+                  {['Week', 'Deliveries', 'Earnings', 'Distance'].map((col) => (
+                    <th key={col} className="text-left p-4 font-switzer font-semibold text-[#fcfcfc] text-sm">
+                      {col}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {chartData.length > 0 ? chartData.map((row, i) => (
+                  <tr key={i} className="border-b border-[#1f1f1f] hover:bg-[#111] transition-colors">
+                    <td className="p-4 font-switzer text-[#fcfcfc] text-sm">{row.week}</td>
+                    <td className="p-4 font-switzer text-[#fcfcfc] text-sm">{row.deliveries}</td>
+                    <td className="p-4 font-switzer font-semibold text-[#f2fd7d] text-sm">
+                      ₦{Number(row.earnings).toLocaleString()}
+                    </td>
+                    <td className="p-4 font-switzer text-[#fcfcfc] text-sm">
+                      {analytics?.weekly_breakdown?.[i]?.distance?.toFixed(1) || '—'} km
+                    </td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan={4} className="p-8 text-center text-[#555] font-switzer text-sm">
+                      No delivery data yet
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default DriverEarningsPage;
