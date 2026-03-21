@@ -66,7 +66,7 @@ function OnboardingPage() {
             <div className="w-10 h-10 bg-gradient-to-br from-[#f2fd7d] to-[#d4e157] rounded-xl flex items-center justify-center shadow-lg shadow-[#f2fd7d]/20">
               <Truck className="w-5 h-5 text-black" />
             </div>
-            <h1 className="font-['Inter',sans-serif] font-bold text-2xl tracking-tight">
+            <h1 className="font-technor font-bold text-2xl tracking-tight">
               Petride
             </h1>
           </div>
