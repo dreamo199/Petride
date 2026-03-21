@@ -90,7 +90,7 @@ function OnboardingPage() {
               Sign In
             </Link>
             <Link to="/signup">
-              <button className="bg-[#f2fd7d] text-black px-6 py-2.5 rounded-full font-semibold text-sm hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-[#f2fd7d]/20">
+              <button className="bg-[#f2fd7d] text-black px-6 py-2.5 rounded-full font-semibold text-sm hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-[#f2fd7d]/20 font-switzer">
                 Get Started
               </button>
             </Link>
