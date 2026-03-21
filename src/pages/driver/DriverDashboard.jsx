@@ -128,11 +128,7 @@ export default function DriverDashboard() {
             <h2 className="font-['Inter',sans-serif] font-bold text-2xl text-[#a09797] mb-1">
             {getGreeting()}, {user?.user?.first_name || user?.user?.username || 'Driver'}
             </h2>
-            
-            <h2 className="font-['Inter',sans-serif] text-[#a09797] mb-1">
-              Welcome back! 
-            </h2>
-            
+    
             <p className="font-['Manrope',sans-serif] text-[#888] text-sm max-w-md">
               {isAvailable
                 ? stats.active_deliveries > 0
