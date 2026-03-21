@@ -118,9 +118,9 @@ export default function DriverDashboard() {
           <div className="absolute -bottom-12 -left-8 w-40 h-40 bg-[#f2fd7d]/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-2">
               <div className={`w-3 h-3 rounded-full ${isAvailable ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`} />
-              <span className={`text-sm font-medium ${isAvailable ? 'text-green-400' : 'text-[#888]'}`}>
+              <span className={`text-xs font-medium ${isAvailable ? 'text-green-400' : 'text-[#888]'}`}>
                 {isAvailable ? 'Online & Available' : 'Offline'}
               </span>
             </div>
