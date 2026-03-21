@@ -116,7 +116,7 @@ function Header() {
                 {/* Menu Items */}
                 <div className="py-2">
                   {[
-                    { icon: UserCircle, label: 'My Profile', path: 'profile' },
+                    { icon: UserCircle, label: 'My Profile', path: 'profile' }, 
                     { icon: Settings, label: 'Settings', path: '/settings' },
                     { icon: HelpCircle, label: 'Support', path: '/support' },
                   ].map(({ icon: Icon, label, path }) => (
