@@ -53,10 +53,10 @@ function DeliveryHistoryPage() {
   });
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-1">
+        <h1 className="font-['Inter',sans-serif] font-bold text-2xl sm:text-3xl text-[#fcfcfc] mb-1">
           My Deliveries
         </h1>
         <p className="font-['Manrope',sans-serif] text-[#b2beb5] text-sm">
@@ -66,7 +66,7 @@ function DeliveryHistoryPage() {
 
       {/* Filters */}
       <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl p-4">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
 
           {/* Search */}
           <div className="relative flex-1">
@@ -149,7 +149,8 @@ function DeliveryHistoryPage() {
 
           {/* Export */}
           <button className="
-            flex items-center gap-2 h-10 px-4 rounded-lg
+            hidden sm:flex
+            items-center gap-2 h-10 px-4 rounded-lg
             bg-[#141414] border border-[#343434]
             text-[#888] text-sm
             hover:text-white hover:border-[#555]
@@ -196,64 +197,66 @@ function DeliveryHistoryPage() {
 
       {/* Orders Table */}
       <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-[#111] border-b border-[#343434]">
-              <tr>
-                {['Order #', 'Date', 'Fuel Type', 'Quantity', 'Total', 'Status', 'Actions'].map((col) => (
-                  <th key={col} className="text-left p-4 font-['Manrope',sans-serif] font-semibold text-[#fcfcfc] text-sm">
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map((order) => (
-                <tr key={order.id} className="border-b border-[#1f1f1f] hover:bg-[#111] transition-colors">
-                  <td className="p-4">
-                    <span className="font-['Manrope',sans-serif] font-medium text-[#fcfcfc] text-sm">
-                      {order.order_number}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="font-['Manrope',sans-serif] text-[#b2beb5] text-sm">
-                      {format(new Date(order.created_at), 'EEE, MMMM d, yyyy')}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="font-['Manrope',sans-serif] text-[#fcfcfc] text-sm">
-                      {order.fuel_type_name}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="font-['Manrope',sans-serif] text-[#fcfcfc] text-sm">
-                      {order.quantity_liters}L
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className="font-['Manrope',sans-serif] font-semibold text-[#fcfcfc] text-sm">
-                      ₦{Number(order.total_price).toLocaleString()}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium border ${statusColors[order.status_display]}`}>
-                      {order.status_display}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex gap-3">
-                      <Link 
-                        to={`/driver/orders/${order.id}`}
-                        className="text-[#f2fd7d] hover:text-white text-sm transition-colors"
-                      >
-                        View
-                      </Link>
-                    </div>
-                  </td>
+        <div className="overflow-x-auto w-full">
+          <div className='min-w-full'>
+            <table className="w-full">
+              <thead className="bg-[#111] border-b border-[#343434]">
+                <tr>
+                  {['Order #', 'Date', 'Fuel Type', 'Quantity', 'Total', 'Status', 'Actions'].map((col) => (
+                    <th key={col} className="text-left p-4 font-['Manrope',sans-serif] font-semibold text-[#fcfcfc] text-sm">
+                      {col}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-[#1f1f1f] hover:bg-[#111] transition-colors">
+                    <td className="p-4">
+                      <span className="font-['Manrope',sans-serif] font-medium text-[#fcfcfc] text-sm">
+                        {order.order_number}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-['Manrope',sans-serif] text-[#b2beb5] text-sm">
+                        {format(new Date(order.created_at), 'EEE, MMMM d, yyyy')}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-['Manrope',sans-serif] text-[#fcfcfc] text-sm">
+                        {order.fuel_type_name}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-['Manrope',sans-serif] text-[#fcfcfc] text-sm">
+                        {order.quantity_liters}L
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className="font-['Manrope',sans-serif] font-semibold text-[#fcfcfc] text-sm">
+                        ₦{Number(order.total_price).toLocaleString()}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${statusColors[order.status_display]}`}>
+                        {order.status_display}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex gap-3">
+                        <Link 
+                          to={`/driver/orders/${order.id}`}
+                          className="text-[#f2fd7d] hover:text-white text-sm transition-colors"
+                        >
+                          View
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Empty State */}

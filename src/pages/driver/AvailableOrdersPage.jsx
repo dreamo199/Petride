@@ -43,12 +43,6 @@ function AvailableOrdersPage() {
     }
   };
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await loadAvailableOrders();
-    toast.success('Orders refreshed');
-  };
-
   const handleAcceptOrder = async (orderId) => {
     setAcceptingOrder(orderId);
     
@@ -118,15 +112,6 @@ function AvailableOrdersPage() {
           >
             <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
             <span className="hidden sm:inline">{autoRefresh ? 'Live' : 'Paused'}</span>
-          </button>
-          
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] rounded-lg px-4 py-2 text-sm font-medium transition-all inline-flex items-center gap-2 disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
           </button>
         </div>
       </div>
