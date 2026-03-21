@@ -109,14 +109,6 @@ export default function DriverDashboard() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
-            Driver Dashboard
-          </h1>
-        </div>
-      </div>
 
       {/* Top row: Welcome + Toggle */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -133,11 +125,11 @@ export default function DriverDashboard() {
               </span>
             </div>
 
-            <h2 className="font-['Inter',sans-serif] font-bold text-2xl text-[#a09797] mb-3">
+            <h2 className="font-['Inter',sans-serif] font-bold text-2xl text-[#a09797] mb-1">
             {getGreeting()}, {user?.user?.first_name || user?.user?.username || 'Driver'}
             </h2>
             
-            <h2 className="font-['Inter',sans-serif] font-bold text-xl text-[#fcfcfc] mb-1">
+            <h2 className="font-['Inter',sans-serif] text-[#a09797] mb-1">
               Welcome back! 
             </h2>
             
