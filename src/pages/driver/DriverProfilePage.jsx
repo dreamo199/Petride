@@ -159,11 +159,11 @@ function DriverProfilePage() {
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
+          <h1 className="font-['Inter',sans-serif] font-bold text-2xl sm:text-3xl text-[#fcfcfc] mb-2">
             Driver Profile
           </h1>
           <p className="font-['Manrope',sans-serif] text-[#b2beb5]">
@@ -172,7 +172,7 @@ function DriverProfilePage() {
         </div>
 
         {/* Profile Header Card */}
-        <div className="bg-gradient-to-br from-[#f2fd7d]/10 to-[#0a0a0a] border border-[#343434] rounded-2xl p-8">
+        <div className="bg-gradient-to-br from-[#f2fd7d]/10 to-[#0a0a0a] border border-[#343434] rounded-2xl p-5 sm:p-8">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
             <div className="relative">
               <div className="w-28 h-28 bg-gradient-to-br from-[#f2fd7d] to-[#e8f171] rounded-full flex items-center justify-center shadow-lg">
@@ -182,7 +182,7 @@ function DriverProfilePage() {
             
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h2 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc]">
+                <h2 className="font-['Inter',sans-serif] font-bold text-xl sm:text-3xl text-[#fcfcfc]">
                   {profile.first_name} {profile.last_name}
                 </h2>
                   <div className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(profile.approvalStatus)}`}>
@@ -205,7 +205,7 @@ function DriverProfilePage() {
               </div>
 
               <div className="flex flex-wrap gap-6">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-4">
                   <div className="w-12 h-12 bg-[#f2fd7d]/10 rounded-xl flex items-center justify-center">
                     <Star className="w-6 h-6 text-[#f2fd7d]" />
                   </div>
@@ -415,8 +415,8 @@ function DriverProfilePage() {
             {/* Documents */}
             {activeTab === 'documents' && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                     <FileText className="w-6 h-6 text-[#f2fd7d]" />
                     <h3 className="font-['Inter',sans-serif] font-bold text-2xl text-[#fcfcfc]">
                       Documents
@@ -446,7 +446,7 @@ function DriverProfilePage() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 self-end sm:self-auto">
                           <span className={`px-3 py-1.5 rounded-full text-sm font-medium border ${getStatusColor(doc.status)}`}>
                             {doc.status === 'verified' && <CheckCircle className="w-4 h-4 inline mr-1" />}
                             {doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}

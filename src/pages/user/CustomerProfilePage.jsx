@@ -195,7 +195,7 @@ export function CustomerProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="bg-[#0a0a0a] border border-[#1f1f1f] rounded-2xl p-6">
+        <div className="bg-gradient-to-br from-[#f2fd7d]/10 to-[#0a0a0a] border border-[#1f1f1f] rounded-2xl p-6">
           <div className="flex items-center gap-6">
             <div className="w-20 h-20 bg-gradient-to-br from-[#f2fd7d] to-[#d4e157] rounded-full flex items-center justify-center">
               <span className="text-3xl font-bold text-black">

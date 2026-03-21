@@ -143,7 +143,7 @@ export function ActiveOrderPage() {
               <ArrowLeft className="w-4 h-4" />
               Back to Dashboard
             </Link>
-            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-[#0a0a0a] border border-[#343434] rounded-2xl p-12">
+            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 bg-[#0a0a0a] border border-[#343434] rounded-2xl p-6 sm:p-12">
               <div className="w-20 h-20 rounded-full bg-[#343434] flex items-center justify-center">
                 <Package className="w-10 h-10 text-[#888]" />
               </div>
@@ -151,7 +151,7 @@ export function ActiveOrderPage() {
                 <h3 className="text-[#fcfcfc] text-xl font-bold mb-2">No Active Orders</h3>
                 <p className="text-[#b2beb5] mb-6">You don't have any active deliveries at the moment</p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <button
                   onClick={loadActiveOrder}
                   className="px-6 py-3 bg-[#f2fd7d] text-black rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity inline-flex items-center gap-2"
@@ -238,13 +238,13 @@ export function ActiveOrderPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 pb-24 lg:pb-6">
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left Column - Map & Navigation */}
           <div className="lg:col-span-2 space-y-6">
             {/* Interactive Map */}
             <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden hover:border-[#f2fd7d]/30 transition-all">
-              <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-black flex items-center justify-center">
+              <div className="relative h-[150px] sm:h-[150px] lg:h-[400px] bg-gradient-to-br from-[#1a1a1a] via-[#0a0a0a] to-black flex items-center justify-center">
                 {/* Animated background grid */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="w-full h-full" style={{
@@ -286,7 +286,7 @@ export function ActiveOrderPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 onClick={() => window.location.href = `tel:${activeOrder.customer_number}`}
                 className="bg-[#0a0a0a] border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] hover:border-[#f2fd7d] py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-3 font-semibold"
@@ -421,7 +421,7 @@ export function ActiveOrderPage() {
       {/* Confirmation Dialog */}
       {showConfirmDialog && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl max-w-md w-full p-8 animate-in zoom-in duration-200 shadow-2xl">
+          <div className="bg-[#0a0a0a] border border-[#343434] rounded-2xl max-w-md w-full p-5 sm:p-8 animate-in zoom-in duration-200 shadow-2xl">
             <div className="text-center mb-8">
               <div className="bg-green-500/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
                 <CheckCircle className="w-10 h-10 text-green-400" />
