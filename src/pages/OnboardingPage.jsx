@@ -67,7 +67,7 @@ function OnboardingPage() {
               <Truck className="w-5 h-5 text-black" />
             </div>
             <h1 className="font-['Inter',sans-serif] font-bold text-2xl tracking-tight">
-              Pet<span className="text-[#f2fd7d]">Ride</span>
+              Petride
             </h1>
           </div>
           <div className="flex items-center gap-4">
