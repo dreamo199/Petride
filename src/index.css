@@ -6,13 +6,19 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Switzer', -apple-system, BlinkMacSystemFont;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #000;
   color: #fff;
+}
+
+h1, h2 {
+  font-family: 'Technor', sans-serif;
+}
+
+h3, h4{
+  font-family: 'Satoshi', sans-serif;
 }
 
 code {

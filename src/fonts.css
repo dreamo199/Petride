@@ -1,11 +1,107 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+/* ── Technor ──────────────────────────────────────────── */
+@font-face {
+  font-family: 'Technor';
+  src: url('../assets/fonts/Technor-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Technor';
+  src: url('../assets/fonts/Technor-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Technor';
+  src: url('../assets/fonts/Technor-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Technor';
+  src: url('../assets/fonts/Technor-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Technor';
+  src: url('../assets/fonts/Technor-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
 
-/* Custom font-family classes */
+/* ── Satoshi ──────────────────────────────────────────── */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/Satoshi-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/Satoshi-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/Satoshi-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('../assets/fonts/Satoshi-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* ── Switzer ──────────────────────────────────────────── */
+@font-face {
+  font-family: 'Switzer';
+  src: url('../assets/fonts/Switzer-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('../assets/fonts/Switzer-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('../assets/fonts/Switzer-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('../assets/fonts/Switzer-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Switzer';
+  src: url('../assets/fonts/Switzer-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-display: swap;
+}
+
+/* ── Utility Classes ──────────────────────────────────── */
 @layer utilities {
+  .font-technor {
+    font-family: 'Technor', sans-serif;
+  }
+  .font-satoshi {
+    font-family: 'Satoshi', sans-serif;
+  }
+  .font-switzer {
+    font-family: 'Switzer', sans-serif;
+  }
   .font-manrope {
     font-family: 'Manrope', sans-serif;
   }
-
   .font-inter {
     font-family: 'Inter', sans-serif;
   }
