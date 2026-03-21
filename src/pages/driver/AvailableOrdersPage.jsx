@@ -92,9 +92,9 @@ function AvailableOrdersPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
             Available Orders
@@ -107,7 +107,7 @@ function AvailableOrdersPage() {
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => setAutoRefresh(!autoRefresh)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
@@ -117,7 +117,7 @@ function AvailableOrdersPage() {
             }`}
           >
             <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
-            {autoRefresh ? 'Live' : 'Paused'}
+            <span className="hidden sm:inline">{autoRefresh ? 'Live' : 'Paused'}</span>
           </button>
           
           <button
@@ -143,7 +143,7 @@ function AvailableOrdersPage() {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Top section: Order # + Fee */}
-              <div className="flex items-start justify-between p-6">
+              <div className="flex items-start justify-between p-6 sm:p-6">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="text-[#fcfcfc] font-bold text-lg">
@@ -167,7 +167,7 @@ function AvailableOrdersPage() {
               <div className="border-t border-[#343434]" />
 
               {/* Info grid */}
-              <div className="grid grid-cols-2 gap-4 p-6 bg-[#0a0a0a]/50">
+              <div className="grid grid-cols-2 gap-4 p-4 sm:p-6 bg-[#0a0a0a]/50">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#f2fd7d]/10 flex items-center justify-center shrink-0">
                     <Fuel size={18} className="text-[#f2fd7d]" />
@@ -199,7 +199,7 @@ function AvailableOrdersPage() {
               <div className="border-t border-[#343434]" />
 
               {/* Delivery address */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="flex items-start gap-3 bg-[#141414] rounded-xl p-4 mb-4 border border-[#343434]">
                   <MapPin size={18} className="text-[#f2fd7d] mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
@@ -306,17 +306,17 @@ function AvailableOrdersPage() {
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
             <p className="text-[#b2beb5] text-xs mb-1">Available Orders</p>
-            <p className="text-[#fcfcfc] font-bold text-2xl">{orders.length}</p>
+            <p className="text-[#fcfcfc] font-bold text-xl sm:text-2xl">{orders.length}</p>
           </div>
           <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
             <p className="text-[#b2beb5] text-xs mb-1">Total Earnings</p>
-            <p className="text-[#f2fd7d] font-bold text-2xl">
+            <p className="text-[#f2fd7d] font-bold text-xl sm:text-2xl">
               ₦{orders.reduce((sum, o) => sum + o.delivery_fee, 0).toLocaleString()}
             </p>
           </div>
           <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
             <p className="text-[#b2beb5] text-xs mb-1">Avg. Distance</p>
-            <p className="text-[#fcfcfc] font-bold text-2xl">
+            <p className="text-[#fcfcfc] font-bold text-xl sm:text-2xl">
               {orders.length > 0 
                 ? (orders.reduce((sum, o) => sum + (o.distance_km || 0), 0) / orders.length).toFixed(1)
                 : '0'
