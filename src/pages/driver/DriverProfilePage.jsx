@@ -173,12 +173,10 @@ function DriverProfilePage() {
 
         {/* Profile Header Card */}
         <div className="bg-gradient-to-br from-[#f2fd7d]/10 to-[#0a0a0a] border border-[#343434] rounded-2xl p-5 sm:p-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div className="relative">
-              <div className="w-28 h-28 bg-gradient-to-br from-[#f2fd7d] to-[#e8f171] rounded-full flex items-center justify-center shadow-lg">
+          <div className="flex flex-col md:flex-row items-center md:items-center gap-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-[#f2fd7d] to-[#e8f171] rounded-full flex items-center justify-center shadow-lg">
                 <User className="w-14 h-14 text-black" />
               </div>
-            </div>
             
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
