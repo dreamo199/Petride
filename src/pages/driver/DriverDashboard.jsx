@@ -109,15 +109,12 @@ export default function DriverDashboard() {
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header with Refresh */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
             Driver Dashboard
           </h1>
-          <p className="text-[#b2beb5]">
-            {getGreeting()}, {user?.user?.first_name || user?.user?.username || 'Driver'}
-          </p>
         </div>
       </div>
 
@@ -135,8 +132,12 @@ export default function DriverDashboard() {
                 {isAvailable ? 'Online & Available' : 'Offline'}
               </span>
             </div>
+
+            <h2 className="font-['Inter',sans-serif] font-bold text-2xl text-[#a09797] mb-3">
+            {getGreeting()}, {user?.user?.first_name || user?.user?.username || 'Driver'}
+            </h2>
             
-            <h2 className="font-['Inter',sans-serif] font-bold text-2xl text-[#fcfcfc] mb-3">
+            <h2 className="font-['Inter',sans-serif] font-bold text-xl text-[#fcfcfc] mb-1">
               Welcome back! 
             </h2>
             
