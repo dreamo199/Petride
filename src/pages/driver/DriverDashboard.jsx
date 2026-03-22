@@ -135,8 +135,8 @@ export default function DriverDashboard() {
               style={{ background: 'linear-gradient(90deg, transparent, rgba(74,222,128,0.4), transparent)' }} />
           )}
 
-          <div className="flex flex-col h-full justify-between min-h-[160px]">
-            <div className="flex items-start justify-between mb-6">
+          <div className="flex flex-col h-full justify-between min-h-[130px]">
+            <div className="flex items-start justify-between mb-4">
               <div>
                 <p className="font-switzer text-[#444] text-xs uppercase tracking-wider mb-2">Status</p>
                 <p className={`font-technor font-black text-2xl ${isAvailable ? 'text-green-400' : 'text-[#333]'}`}>
