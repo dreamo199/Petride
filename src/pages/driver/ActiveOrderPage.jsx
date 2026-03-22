@@ -317,7 +317,7 @@ export function ActiveOrderPage() {
       </div>
 
       {/* Sticky Complete Button */}
-      <div className="fixed bottom-4 left-4 right-4 z-40 md:left-[calc(72px+1rem)] lg:left-[calc(220px+1rem)]">
+      <div className="left-4 right-4 z-40 md:left-[calc(72px+1rem)] lg:left-[calc(220px+1rem)]">
         <button
           onClick={() => setShowConfirmDialog(true)}
           disabled={activeOrder.status !== 'in_transit' || updating}
