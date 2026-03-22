@@ -107,10 +107,10 @@ function CustomerDashboard() {
             </div>
 
             <h1 className="font-technor font-black text-3xl sm:text-4xl text-white mb-3 leading-tight">
-              {user?.user?.first_name || user?.user?.username} ID - {user?.customer_id}
+              {user?.user?.first_name || user?.user?.username}
             </h1>
 
-            <h3 className="font-switzer text-[#555] text-xl max-w-md mb-1">
+            <h3 className="font-switzer text-[#555] font-semibold text-lg max-w-md mb-1">
               ID: {user?.customer_id}
             </h3>
 
