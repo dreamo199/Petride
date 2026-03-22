@@ -107,7 +107,7 @@ function CustomerDashboard() {
             </div>
 
             <h1 className="font-technor font-black text-3xl sm:text-4xl text-white mb-3 leading-tight">
-              {user?.user?.first_name || user?.user?.username}
+              {user?.user?.first_name || user?.user?.username} ID - {user?.customer_id}
             </h1>
 
             <p className="font-switzer text-[#555] text-sm max-w-md mb-5">

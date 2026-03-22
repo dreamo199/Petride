@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 function Header() {
   const { user, logout } = useAuth();
-  console.log("User in Header:", user);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -115,7 +114,7 @@ function Header() {
                     <img src={User} alt="avatar" className="w-10 h-10 rounded-full object-cover ring-2 ring-[#f2fd7d]/30" />
                     <div>
                       <p className="font-satoshi text-white font-semibold text-sm">
-                        {user?.user?.first_name} {user?.user?.last_name} {user?.user?.customer_id}
+                        {user?.user?.first_name} {user?.user?.last_name} 
                       </p>
                       <p className="font-switzer text-[#555] text-xs">{user?.user?.email}</p>
                       <span className="inline-block mt-1 px-2 py-0.5 bg-[#f2fd7d]/10 border border-[#f2fd7d]/20 rounded-full text-[#f2fd7d] text-[10px] font-switzer capitalize">
