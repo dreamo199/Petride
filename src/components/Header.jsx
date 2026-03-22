@@ -13,7 +13,6 @@ function Header() {
 
   const role = user?.user?.role;
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -118,7 +117,7 @@ function Header() {
                     <img src={User} alt="avatar" className="w-10 h-10 rounded-full object-cover ring-2 ring-[#f2fd7d]/30" />
                     <div>
                       <p className="font-satoshi text-white font-semibold text-sm">
-                        {user?.user?.first_name} {user?.user?.last_name}
+                        {user?.user?.first_name} {user?.user?.last_name} {user?.user?.customer_id}
                       </p>
                       <p className="font-switzer text-[#555] text-xs">{user?.user?.email}</p>
                       <span className="inline-block mt-1 px-2 py-0.5 bg-[#f2fd7d]/10 border border-[#f2fd7d]/20 rounded-full text-[#f2fd7d] text-[10px] font-switzer capitalize">
