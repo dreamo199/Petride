@@ -14,6 +14,7 @@ const AvailableOrdersPage = React.lazy(() => import('./pages/driver/AvailableOrd
 const ActiveOrderPage = React.lazy(() => import('./pages/driver/ActiveOrderPage'));
 const DeliveryHistoryPage = React.lazy(() => import('./pages/driver/DeliveryHistoryPage'));
 const DriverProfilePage = React.lazy(() => import('./pages/driver/DriverProfilePage'));
+const DriverEarningsPage = React.lazy(() => import('./pages/driver/DriverEarningsPage'));
 
 // User pages
 const CustomerDashboard = React.lazy(() => import("./pages/user/CustomerDashboard"));
@@ -104,6 +105,7 @@ function AppRoutes() {
         <Route path="active-order" element={<ActiveOrderPage />} />
         <Route path="history" element={<DeliveryHistoryPage />} />
         <Route path="profile" element={<DriverProfilePage />}/>
+        <Route path="earnings" element={<DriverEarningsPage />}/>
       </Route>
       
       {/* Admin routes */}
