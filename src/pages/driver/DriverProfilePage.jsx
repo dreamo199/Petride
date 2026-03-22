@@ -72,12 +72,15 @@ function DriverProfilePage() {
     finally { setSaving(false); }
   };
 
-  const getStatusStyle = (status) => ({
-    verified: 'approved': { color: '#4ade80', border: 'rgba(74,222,128,0.2)', bg: 'rgba(74,222,128,0.06)' },
+  const getStatusStyle = (status) => {
+  const map = {
+    verified: { color: '#4ade80', border: 'rgba(74,222,128,0.2)', bg: 'rgba(74,222,128,0.06)' },
+    approved: { color: '#4ade80', border: 'rgba(74,222,128,0.2)', bg: 'rgba(74,222,128,0.06)' },
     pending: { color: '#facc15', border: 'rgba(250,204,21,0.2)', bg: 'rgba(250,204,21,0.06)' },
     rejected: { color: '#f87171', border: 'rgba(248,113,113,0.2)', bg: 'rgba(248,113,113,0.06)' },
-  }[status] || { color: '#555', border: '#1a1a1a', bg: '#0d0d0d' });
-
+  };
+  return map[status] || { color: '#555', border: '#1a1a1a', bg: '#0d0d0d' };
+};
   const inputClass = "font-switzer w-full h-11 rounded-xl px-4 text-white placeholder-[#333] outline-none transition-all";
   const inputStyle = { background: '#0d0d0d', border: '1px solid #1a1a1a' };
 
