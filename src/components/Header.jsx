@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   const { user, logout } = useAuth();
+  console.log("User in Header:", user);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -31,13 +32,10 @@ function Header() {
   const menuItems = role === 'driver' ? [
     { icon: UserCircle, label: 'My Profile', path: '/driver/profile' },
     { icon: History, label: 'Delivery History', path: '/driver/history' },
-    { icon: BarChart3, label: 'Earnings', path: '/driver/earnings' },
     { icon: Settings, label: 'Settings', path: '/settings' },
     { icon: HelpCircle, label: 'Support', path: '/support' },
   ] : [
     { icon: UserCircle, label: 'My Profile', path: '/customer/profile' },
-    { icon: History, label: 'My Orders', path: '/customer/orders' },
-    { icon: BarChart3, label: 'Analytics', path: '/customer/analytics' },
     { icon: Settings, label: 'Settings', path: '/settings' },
     { icon: HelpCircle, label: 'Support', path: '/support' },
   ];
