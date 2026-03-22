@@ -104,7 +104,7 @@ export default function DriverDashboard() {
               {getGreeting()},<br />{user?.user?.first_name || 'Driver'}
             </h1>
 
-            <p className="font-switzer text-[#444] text-sm max-w-md mb-5">
+            <p className="font-switzer text-[#444] text-sm max-w-md mb-2">
               {isAvailable
                 ? stats.active_deliveries > 0
                   ? `${stats.active_deliveries} active ${stats.active_deliveries === 1 ? 'delivery' : 'deliveries'} in progress`
