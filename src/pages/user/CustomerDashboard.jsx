@@ -110,6 +110,10 @@ function CustomerDashboard() {
               {user?.user?.first_name || user?.user?.username} ID - {user?.customer_id}
             </h1>
 
+            <h3 className="font-switzer text-[#555] text-xl max-w-md mb-1">
+              ID: {user?.customer_id}
+            </h3>
+
             <p className="font-switzer text-[#555] text-sm max-w-md mb-5">
               {activeOrder
                 ? `Active order in progress — ${activeOrder.order_number}`
