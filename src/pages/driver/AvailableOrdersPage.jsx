@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { MapPin, Package, Clock, Fuel, Navigation, CheckCircle, ChevronRight, Loader2, RefreshCw, Zap } from 'lucide-react';
+import { MapPin, Package, Fuel, Navigation, CheckCircle, Loader2, RefreshCw, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 import { driverService } from '../../services/driver';
-import { orderService } from '../../services/order';
 
 function AvailableOrdersPage() {
   const navigate = useNavigate();
@@ -13,215 +12,183 @@ function AvailableOrdersPage() {
   const [acceptingOrder, setAcceptingOrder] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
-  useEffect(() => {
-    loadAvailableOrders();
-  }, []);
+  useEffect(() => { loadAvailableOrders(); }, []);
 
   useEffect(() => {
     if (!autoRefresh) return;
-
-    const interval = setInterval(() => {
-      loadAvailableOrders(true);
-    }, 30000);
-
+    const interval = setInterval(() => loadAvailableOrders(true), 30000);
     return () => clearInterval(interval);
   }, [autoRefresh]);
 
   const loadAvailableOrders = async (silent = false) => {
     try {
       if (!silent) setLoading(true);
-      const availableOrders = await driverService.availableOrders();
-      setOrders(availableOrders || []);
-    } catch (error) {
-      console.error('Error loading orders:', error);
-      if (!silent) {
-        toast.error('Failed to load available orders');
-      }
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+      const data = await driverService.availableOrders();
+      setOrders(data || []);
+    } catch {
+      if (!silent) toast.error('Failed to load available orders');
+    } finally { setLoading(false); setRefreshing(false); }
   };
 
   const handleAcceptOrder = async (orderId) => {
     setAcceptingOrder(orderId);
-    
     try {
       await driverService.acceptOrder(orderId);
-      
-      toast.success('Order accepted!', { 
-        description: 'Navigating to active delivery...',
-        icon: <CheckCircle size={16} />,
-      });
-      
-      setTimeout(() => {
-        navigate('/driver/active-order');
-      }, 1000);
-    } catch (error) {
-      console.error('Error accepting order:', error);
-      toast.error('Failed to accept order. Please try again.');
+      toast.success('Order accepted!');
+      setTimeout(() => navigate('/driver/active-order'), 1000);
+    } catch {
+      toast.error('Failed to accept order');
       setAcceptingOrder(null);
     }
   };
 
-  const handleViewDetails = async (orderId) => {
-    try {
-      await orderService.getOrderDetails(orderId);
-      navigate(`/driver/orders/${orderId}`);
-    } catch (error) {
-      console.error('Error loading order details:', error);
-      toast.error('Failed to load order details');
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <RefreshCw className="w-8 h-8 text-[#f2fd7d] animate-spin mx-auto mb-4" />
-          <p className="text-[#b2beb5]">Loading available orders...</p>
-        </div>
+  if (loading) return (
+    <div className="p-6 flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <RefreshCw className="w-8 h-8 text-[#f2fd7d] animate-spin mx-auto mb-4" />
+        <p className="font-switzer text-[#555]">Loading orders...</p>
       </div>
-    );
-  }
+    </div>
+  );
+
+  const totalPotential = orders.reduce((s, o) => s + (o.delivery_fee || 0), 0);
+  const avgDistance = orders.length > 0
+    ? (orders.reduce((s, o) => s + (o.distance_km || 0), 0) / orders.length).toFixed(1)
+    : '0';
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-5 pb-24 lg:pb-6">
+
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-['Inter',sans-serif] font-bold text-3xl text-[#fcfcfc] mb-2">
+          <div className="flex items-center gap-2 mb-2">
+            <div className={`w-1.5 h-1.5 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-[#333]'}`} />
+            <span className={`font-switzer text-xs tracking-widest uppercase font-semibold ${autoRefresh ? 'text-green-400' : 'text-[#444]'}`}>
+              {autoRefresh ? 'Live feed' : 'Paused'}
+            </span>
+          </div>
+          <h1 className="font-technor font-black text-2xl sm:text-3xl text-white mb-1">
             Available Orders
           </h1>
-          <p className="text-[#b2beb5]">
-            {orders.length > 0 
-              ? `${orders.length} ${orders.length === 1 ? 'order' : 'orders'} waiting for pickup`
-              : 'No orders available right now'
-            }
+          <p className="font-switzer text-[#444] text-sm">
+            {orders.length > 0
+              ? `${orders.length} ${orders.length === 1 ? 'order' : 'orders'} waiting`
+              : 'No orders right now'}
           </p>
         </div>
-        
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <button
-            onClick={() => setAutoRefresh(!autoRefresh)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all inline-flex items-center gap-2 ${
-              autoRefresh 
-                ? 'bg-green-500/10 text-green-400 border border-green-500/30' 
-                : 'bg-[#0a0a0a] text-[#b2beb5] border border-[#343434]'
-            }`}
-          >
-            <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
-            <span className="hidden sm:inline">{autoRefresh ? 'Live' : 'Paused'}</span>
-          </button>
-        </div>
+        <button
+          onClick={() => setAutoRefresh(!autoRefresh)}
+          className="font-switzer px-4 py-2 rounded-xl text-sm font-medium transition-all inline-flex items-center gap-2"
+          style={{
+            background: autoRefresh ? 'rgba(74,222,128,0.08)' : '#0d0d0d',
+            border: `1px solid ${autoRefresh ? 'rgba(74,222,128,0.2)' : '#1a1a1a'}`,
+            color: autoRefresh ? '#4ade80' : '#444',
+          }}>
+          <Zap size={14} />
+          {autoRefresh ? 'Pause' : 'Resume'}
+        </button>
       </div>
 
-      {/* Orders List */}
+      {/* Summary stats */}
+      {orders.length > 0 && (
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { label: 'Orders', value: orders.length, color: '#f2fd7d' },
+            { label: 'Potential earnings', value: `₦${totalPotential.toLocaleString()}`, color: '#f2fd7d' },
+            { label: 'Avg distance', value: `${avgDistance}km`, color: '#60a5fa' },
+          ].map(({ label, value, color }) => (
+            <div key={label} className="rounded-xl p-4 text-center"
+              style={{ background: '#080808', border: '1px solid #1a1a1a' }}>
+              <p className="font-switzer text-[#444] text-xs mb-1">{label}</p>
+              <p className="font-technor font-bold text-lg" style={{ color }}>{value}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Order Cards */}
       <div className="space-y-4">
         {orders.map((order, index) => {
           const isAccepting = acceptingOrder === order.id;
-          
           return (
-            <div
-              key={order.id}
-              className="group bg-[#0a0a0a] border border-[#343434] rounded-2xl overflow-hidden hover:border-[#f2fd7d]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#f2fd7d]/5"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              {/* Top section: Order # + Fee */}
-              <div className="flex items-start justify-between p-6 sm:p-6">
+            <div key={order.id}
+              className="rounded-2xl overflow-hidden transition-all duration-300 group"
+              style={{ background: '#080808', border: '1px solid #1a1a1a' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(242,253,125,0.2)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = '#1a1a1a'}>
+
+              {/* Top accent line */}
+              <div className="h-px opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ background: 'linear-gradient(90deg, transparent, rgba(242,253,125,0.3), transparent)' }} />
+
+              {/* Header */}
+              <div className="flex items-start justify-between p-5 sm:p-6">
                 <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-[#fcfcfc] font-bold text-lg">
-                      {order.order_number}
-                    </h3>
-                    <span className="px-2 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full border border-blue-500/30">
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <h3 className="font-satoshi font-bold text-white text-lg">{order.order_number}</h3>
+                    <span className="font-switzer px-2 py-0.5 rounded-full text-xs font-semibold"
+                      style={{ background: 'rgba(96,165,250,0.1)', border: '1px solid rgba(96,165,250,0.2)', color: '#60a5fa' }}>
                       New
                     </span>
                   </div>
-                  <p className="text-[#b2beb5] text-sm">{order.fuel_type_name} delivery</p>
+                  <p className="font-switzer text-[#444] text-sm capitalize">{order.fuel_type_name} delivery</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-[#f2fd7d] font-bold text-2xl">
-                    ₦{order.delivery_fee.toLocaleString()}
+                  <p className="font-technor font-black text-2xl text-[#f2fd7d]">
+                    ₦{Number(order.delivery_fee).toLocaleString()}
                   </p>
-                  <p className="text-[#b2beb5] text-xs mt-1">Delivery fee</p>
+                  <p className="font-switzer text-[#333] text-xs mt-0.5">delivery fee</p>
                 </div>
               </div>
 
-              {/* Divider */}
-              <div className="border-t border-[#343434]" />
-
-              {/* Info grid */}
-              <div className="grid grid-cols-2 gap-4 p-4 sm:p-6 bg-[#0a0a0a]/50">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#f2fd7d]/10 flex items-center justify-center shrink-0">
-                    <Fuel size={18} className="text-[#f2fd7d]" />
+              {/* Info row */}
+              <div className="grid grid-cols-2 gap-3 px-5 sm:px-6 pb-5" style={{ borderTop: '1px solid #111' }}>
+                <div className="flex items-center gap-3 pt-4">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(242,253,125,0.08)' }}>
+                    <Fuel size={16} className="text-[#f2fd7d]" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[#b2beb5] text-xs mb-1">Fuel Type</p>
-                    <p className="text-[#fcfcfc] font-semibold">
-                      {order.fuel_type_name}
-                    </p>
-                    <p className="text-[#888] text-sm mt-0.5">{order.quantity_liters}L</p>
+                  <div>
+                    <p className="font-switzer text-[#444] text-xs">Fuel</p>
+                    <p className="font-satoshi font-semibold text-white text-sm capitalize">{order.fuel_type_name}</p>
+                    <p className="font-technor text-[#666] text-xs">{order.quantity_liters}L</p>
                   </div>
                 </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
-                    <Navigation size={18} className="text-blue-400" />
+                <div className="flex items-center gap-3 pt-4">
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(96,165,250,0.08)' }}>
+                    <Navigation size={16} className="text-blue-400" />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[#b2beb5] text-xs mb-1">Distance</p>
-                    <p className="text-[#fcfcfc] font-semibold">
-                      {order.distance_km || '—'} km
-                    </p>
-                    <p className="text-[#888] text-sm mt-0.5">From you</p>
+                  <div>
+                    <p className="font-switzer text-[#444] text-xs">Distance</p>
+                    <p className="font-technor font-bold text-white text-sm">{order.distance_km || '—'} km</p>
+                    <p className="font-switzer text-[#444] text-xs">From you</p>
                   </div>
                 </div>
               </div>
 
-              {/* Divider */}
-              <div className="border-t border-[#343434]" />
-
-              {/* Delivery address */}
-              <div className="p-4 sm:p-6">
-                <div className="flex items-start gap-3 bg-[#141414] rounded-xl p-4 mb-4 border border-[#343434]">
-                  <MapPin size={18} className="text-[#f2fd7d] mt-0.5 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[#b2beb5] text-xs mb-2">Delivery Address</p>
-                    <p className="text-[#fcfcfc] leading-relaxed">
-                      {order.delivery_address}
-                    </p>
+              {/* Address + CTA */}
+              <div className="px-5 sm:px-6 pb-5" style={{ borderTop: '1px solid #111' }}>
+                <div className="flex items-start gap-3 rounded-xl p-4 mt-4 mb-4"
+                  style={{ background: '#0d0d0d', border: '1px solid #161616' }}>
+                  <MapPin size={15} className="text-[#f2fd7d] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-switzer text-[#444] text-xs mb-1 uppercase tracking-wider">Delivery Address</p>
+                    <p className="font-switzer text-[#888] text-sm leading-relaxed">{order.delivery_address}</p>
                   </div>
                 </div>
 
-                {/* Action buttons */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => handleAcceptOrder(order.id)}
-                    disabled={isAccepting}
-                    className={`
-                      flex-1 h-12 rounded-xl font-bold
-                      transition-all duration-200
-                      ${isAccepting
-                        ? 'bg-[#f2fd7d]/50 text-black/50 cursor-not-allowed'
-                        : 'bg-[#f2fd7d] text-black hover:bg-[#e5f06d] shadow-lg shadow-[#f2fd7d]/20'
-                      }
-                    `}
-                  >
-                    {isAccepting ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Accepting...
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-2">
-                        <CheckCircle className="w-5 h-5" />
-                        Accept Order
-                      </span>
-                    )}
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleAcceptOrder(order.id)}
+                  disabled={isAccepting}
+                  className="font-switzer w-full h-12 rounded-xl font-bold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  style={{ background: '#f2fd7d', color: '#000' }}>
+                  {isAccepting
+                    ? <><Loader2 className="w-4 h-4 animate-spin" /> Accepting...</>
+                    : <><CheckCircle className="w-4 h-4" /> Accept Order</>
+                  }
+                </button>
               </div>
             </div>
           );
@@ -229,87 +196,31 @@ function AvailableOrdersPage() {
 
         {/* Empty State */}
         {orders.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-24 bg-[#0a0a0a] border border-[#343434] rounded-2xl">
-            <div className="w-20 h-20 rounded-2xl bg-[#141414] border border-[#343434] flex items-center justify-center mb-6">
-              <Package size={32} className="text-[#888]" />
+          <div className="flex flex-col items-center justify-center py-24 rounded-2xl"
+            style={{ background: '#080808', border: '1px solid #1a1a1a' }}>
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6"
+              style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
+              <Package size={30} className="text-[#2a2a2a]" />
             </div>
-            <h3 className="text-[#fcfcfc] font-bold text-xl mb-2">
-              No Available Orders
-            </h3>
-            <p className="text-[#b2beb5] mb-6 text-center max-w-md">
-              New orders will appear here automatically. Make sure you're online to receive orders.
+            <h3 className="font-technor font-black text-xl text-white mb-2">No Orders Available</h3>
+            <p className="font-switzer text-[#444] text-sm text-center max-w-sm mb-6">
+              New orders will appear here automatically. Make sure you're online.
             </p>
-            
             {autoRefresh ? (
-              <div className="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-full">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 text-sm font-medium">Listening for new orders...</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full"
+                style={{ background: 'rgba(74,222,128,0.06)', border: '1px solid rgba(74,222,128,0.15)' }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="font-switzer text-green-400 text-sm">Listening for orders...</span>
               </div>
             ) : (
-              <button
-                onClick={() => setAutoRefresh(true)}
-                className="px-6 py-3 bg-[#f2fd7d] text-black rounded-xl font-semibold hover:opacity-90 transition-opacity inline-flex items-center gap-2"
-              >
-                <Zap className="w-4 h-4" />
-                Enable Auto-Refresh
+              <button onClick={() => setAutoRefresh(true)}
+                className="font-switzer px-6 py-3 bg-[#f2fd7d] text-black rounded-xl font-bold text-sm hover:opacity-90 transition-all inline-flex items-center gap-2">
+                <Zap className="w-4 h-4" /> Enable Live Feed
               </button>
             )}
           </div>
         )}
       </div>
-
-      {/* Bottom info banner (if orders exist) */}
-      {orders.length > 0 && (
-        <div className="bg-gradient-to-r from-blue-500/10 to-transparent border border-blue-500/20 rounded-xl p-5">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/30">
-              <Zap size={20} className="text-blue-400" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[#fcfcfc] font-semibold mb-1">
-                {autoRefresh ? 'Auto-refresh is enabled' : 'Auto-refresh is paused'}
-              </p>
-              <p className="text-[#b2beb5] text-sm">
-                {autoRefresh 
-                  ? 'New orders will appear automatically every 30 seconds'
-                  : 'Enable auto-refresh to see new orders automatically'
-                }
-              </p>
-            </div>
-            {autoRefresh && (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 border border-green-500/30 rounded-full">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                <span className="text-green-400 text-xs font-medium">Live</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Stats Footer */}
-      {orders.length > 0 && (
-        <div className="grid grid-cols-3 gap-4">
-          <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
-            <p className="text-[#b2beb5] text-xs mb-1">Available Orders</p>
-            <p className="text-[#fcfcfc] font-bold text-xl sm:text-2xl">{orders.length}</p>
-          </div>
-          <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
-            <p className="text-[#b2beb5] text-xs mb-1">Total Earnings</p>
-            <p className="text-[#f2fd7d] font-bold text-xl sm:text-2xl">
-              ₦{orders.reduce((sum, o) => sum + o.delivery_fee, 0).toLocaleString()}
-            </p>
-          </div>
-          <div className="bg-[#0a0a0a] border border-[#343434] rounded-xl p-4 text-center">
-            <p className="text-[#b2beb5] text-xs mb-1">Avg. Distance</p>
-            <p className="text-[#fcfcfc] font-bold text-xl sm:text-2xl">
-              {orders.length > 0 
-                ? (orders.reduce((sum, o) => sum + (o.distance_km || 0), 0) / orders.length).toFixed(1)
-                : '0'
-              }km
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
