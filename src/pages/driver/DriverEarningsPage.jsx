@@ -19,7 +19,6 @@ const CustomTooltip = ({ active, payload, label }) => {
 function DriverEarningsPage() {
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [chartPeriod, setChartPeriod] = useState('8W');
 
   useEffect(() => {
@@ -37,13 +36,6 @@ function DriverEarningsPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await fetchData();
-    setRefreshing(false);
-    toast.success('Data refreshed');
   };
 
   const handleExport = () => {
@@ -114,14 +106,6 @@ function DriverEarningsPage() {
           >
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Export</span>
-          </button>
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] rounded-lg px-4 py-2 text-sm font-medium transition-all inline-flex items-center gap-2 disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Refresh</span>
           </button>
         </div>
       </div>

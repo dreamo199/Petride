@@ -21,7 +21,6 @@ const CustomTooltip = ({ active, payload, label, prefix = '', suffix = '' }) => 
 
 function CustomerAnalyticsPage() {
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [stats, setStats] = useState({
     total_orders: 0,
     completed_orders: 0,
@@ -77,13 +76,6 @@ function CustomerAnalyticsPage() {
     }
   };
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await loadDashboard();
-    setRefreshing(false);
-    toast.success('Analytics refreshed');
-  };
-
   const completionRate = stats.total_orders > 0
     ? Math.round((stats.completed_orders / stats.total_orders) * 100)
     : 0;
@@ -105,21 +97,13 @@ function CustomerAnalyticsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-technor font-bold text-2xl sm:text-3xl text-[#fcfcfc] mb-1">
+          <h1 className="font-technor font-bold text-xl sm:text-3xl text-[#fcfcfc] mb-1">
             Analytics
           </h1>
-          <p className="font-switzer text-[#b2beb5]">
+          <p className="font-switzer text-[#b2beb5] text-sm">
             Your fuel consumption and spending overview
           </p>
         </div>
-        <button
-          onClick={handleRefresh}
-          disabled={refreshing}
-          className="border border-[#343434] text-[#fcfcfc] hover:bg-[#141414] rounded-lg px-4 py-2 text-sm font-medium transition-all inline-flex items-center gap-2 disabled:opacity-50"
-        >
-          <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
       </div>
 
       {/* Main Stats */}

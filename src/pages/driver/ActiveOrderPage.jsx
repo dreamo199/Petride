@@ -255,7 +255,7 @@ export function ActiveOrderPage() {
 
                 <div className="text-center relative z-10">
                   <div className="relative inline-block">
-                    <MapPin className="w-20 h-20 text-[#f2fd7d] animate-bounce" />
+                    <MapPin className="w-10 h-10 text-[#f2fd7d] animate-bounce" />
                     <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-black">
                       <div className="w-full h-full bg-green-400 rounded-full animate-ping" />
                     </div>
