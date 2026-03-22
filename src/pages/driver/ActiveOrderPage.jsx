@@ -155,11 +155,6 @@ export function ActiveOrderPage() {
               onMouseLeave={e => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.style.color = '#555'; }}>
               <XCircle className="w-3.5 h-3.5" /> Cancel
             </button>
-            <button onClick={loadActiveOrder}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-[#444] hover:text-white transition-all"
-              style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
-              <RefreshCw className="w-4 h-4" />
-            </button>
           </div>
         </div>
       </div>
@@ -316,7 +311,7 @@ export function ActiveOrderPage() {
         </div>
       </div>
 
-      {/* Sticky Complete Button */}
+      {/*Complete Button */}
       <div className="left-4 right-4 z-40 md:left-[calc(72px+1rem)] lg:left-[calc(220px+1rem)]">
         <button
           onClick={() => setShowConfirmDialog(true)}
