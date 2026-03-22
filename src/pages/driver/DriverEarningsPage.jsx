@@ -28,7 +28,7 @@ function DriverEarningsPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const data = await driverService.getDriverAnalytics();
+      const data = await driverService.getAnalytics();
       setAnalytics(data);
     } catch (error) {
       console.error('Error fetching earnings:', error);
