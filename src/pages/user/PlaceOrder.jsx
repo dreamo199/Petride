@@ -228,7 +228,7 @@ function PlaceOrder() {
                 {/* Big quantity display + +/- */}
                 <div className="flex items-center justify-center gap-6 py-6">
                   <button
-                    onClick={() => adjustQuantity(-10)}
+                    onClick={() => adjustQuantity(-1)}
                     className="w-12 h-12 rounded-full border border-[#343434] bg-[#0f0f0f] hover:border-[#555] flex items-center justify-center transition-colors"
                   >
                     <Minus size={18} className="text-[#888]" />
@@ -253,7 +253,7 @@ function PlaceOrder() {
                   </div>
 
                   <button
-                    onClick={() => adjustQuantity(10)}
+                    onClick={() => adjustQuantity(1)}
                     className="w-12 h-12 rounded-full border border-[#343434] bg-[#0f0f0f] hover:border-[#555] flex items-center justify-center transition-colors"
                   >
                     <Plus size={18} className="text-[#888]" />

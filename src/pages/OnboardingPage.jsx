@@ -371,7 +371,7 @@ function OnboardingPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3" data-aos="fade-up">
             {[
-              { label: "No minimum order", icon: CheckCircle2 },
+              { label: "10 L minimum order", icon: CheckCircle2 },
               { label: "Transparent pricing", icon: CheckCircle2 },
               { label: "Multiple payments", icon: CheckCircle2 },
               { label: "Eco-friendly delivery", icon: CheckCircle2 },
@@ -419,7 +419,7 @@ function OnboardingPage() {
                 Join thousands using PetRide for fast, reliable fuel delivery. Sign up in under a minute.
               </p>
               <Link to="/signup">
-                <button className="group font-switzer bg-[#f2fd7d] text-black px-12 py-5 rounded-xl font-bold text-lg inline-flex items-center gap-3 hover:opacity-90 transition-all hover:gap-4">
+                <button className="group font-switzer bg-[#f2fd7d] text-black px-12 py-5 rounded-xl font-bold text-lg inline-flex items-center gap-3 hover:opacity-90 transition-all hover:gap-2">
                   Create free account
                   <ArrowRight className="w-5 h-5 transition-all" />
                 </button>

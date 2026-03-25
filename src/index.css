@@ -1,7 +1,5 @@
 @import "tailwindcss";
-
 @import "./fonts.css";
-
 @import "./theme.css";
 
 body {
@@ -19,8 +17,12 @@ h1, h2 {
   font-family: 'Technor', sans-serif;
 }
 
-h3, h4, a{
+h3, h4, a, p {
   font-family: 'Satoshi', sans-serif;
+}
+
+div {
+  font-family: 'Switzer', sans-serif;
 }
 
 code {

@@ -16,13 +16,14 @@ const DeliveryHistoryPage = React.lazy(() => import('./pages/driver/DeliveryHist
 const DriverProfilePage = React.lazy(() => import('./pages/driver/DriverProfilePage'));
 const DriverEarningsPage = React.lazy(() => import('./pages/driver/DriverEarningsPage'));
 
-// User pages
+// Customer pages
 const CustomerDashboard = React.lazy(() => import("./pages/user/CustomerDashboard"));
 const PlaceOrder = React.lazy(() => import("./pages/user/PlaceOrder"));
 const OrderHistoryPage = React.lazy(() => import("./pages/user/OrderHistoryPage"));
 const OrderDetailsPage = React.lazy(() => import("./pages/user/OrderDetailsPage"));
 const CustomerAnalyticsPage = React.lazy(() => import("./pages/user/CustomerAnalyticsPage"));
 const CustomerProfilePage = React.lazy(() => import('./pages/user/CustomerProfilePage'))
+const TrackingPage = React.lazy(() => import('./pages/user/TrackingPage'));
 
 // Auth pages
 const OnboardingPage = React.lazy(() => import("./pages/OnboardingPage"));
@@ -87,6 +88,8 @@ function AppRoutes() {
         <Route path="analytics" element={<CustomerAnalyticsPage />} />
         <Route path="orders/:orderId" element={<OrderDetailsPage />} />
         <Route path="profile" element={<CustomerProfilePage />}/>
+        <Route path="tracking/:orderId" element={<TrackingPage />} />
+
       </Route>
       
       {/* Driver routes */}

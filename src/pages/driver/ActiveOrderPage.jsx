@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { driverService } from '../../services/driver';
 import { format } from 'date-fns';
 import { Link } from 'react-router';
@@ -16,6 +16,37 @@ export function ActiveOrderPage() {
   const [updating, setUpdating] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [activeOrder, setActiveOrder] = useState(null);
+  const wsRef = useRef(null);
+
+  useEffect(() => {
+  if (!activeOrder) return;
+
+  // Connect WebSocket
+  const ws = new WebSocket(
+    `${import.meta.env.VITE_WS_URL || 'wss://petride-backend.onrender.com'}/ws/tracking/${activeOrder.id}/` ||`ws://127.0.0.1:8000/ws/tracking/${activeOrder.id}/`
+  );
+  wsRef.current = ws;
+
+  //  
+
+  // Send location every 10 seconds
+  const interval = setInterval(() => {
+    if (ws.readyState === WebSocket.OPEN && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        ws.send(JSON.stringify({
+          type: 'location_update',
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        }));
+      });
+    }
+  }, 10000);
+
+  return () => {
+    clearInterval(interval);
+    ws.close();
+    };
+  }, [activeOrder]);
 
   useEffect(() => { loadActiveOrder(); }, []);
 

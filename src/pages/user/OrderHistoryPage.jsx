@@ -11,7 +11,7 @@ const statusColors = {
   'Cancelled': 'bg-red-500/20 text-red-400 border-red-500/30',
 };
 
-const statuses = ['All', 'Pending', 'In Transit', 'Delivered', 'Cancelled'];
+const statuses = ['All', 'Pending', 'In Transit', 'Completed', 'Cancelled'];
 
 function OrdersHistoryPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,6 +44,7 @@ function OrdersHistoryPage() {
     try {
       const data = await orderService.getOrders();
       setOrders(data?.results || []);
+      console.log(data)
     } catch (err) { console.error(err); }
   };
 
@@ -114,7 +115,7 @@ function OrdersHistoryPage() {
                   >
                     {status !== 'All' && (
                       <span className={`w-1.5 h-1.5 rounded-full ${
-                        status === 'Delivered' ? 'bg-green-400' : status === 'In Transit' ? 'bg-blue-400' :
+                        status === 'Completed' ? 'bg-green-400' : status === 'In Transit' ? 'bg-blue-400' :
                         status === 'Pending' ? 'bg-yellow-400' : 'bg-red-400'
                       }`} />
                     )}

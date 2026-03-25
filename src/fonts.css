@@ -1,4 +1,6 @@
-/* ── Technor ──────────────────────────────────────────── */
+@import url('https://api.fontshare.com/v2/css?f[]=technor@400,500,700,900&f[]=satoshi@400,500,700,900&f[]=switzer@400,500,700,900&display=swap');
+
+/* ── Technor ────────────────────────────────────────────
 @font-face {
   font-family: 'Technor';
   src: url('../assets/fonts/Technor-Regular.woff2') format('woff2');
@@ -31,13 +33,13 @@
 }
 
 /* ── Satoshi ──────────────────────────────────────────── */
-@font-face {
+/* @font-face {
   font-family: 'Satoshi';
   src: url('../assets/fonts/Satoshi-Regular.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
-}
-@font-face {
+} */
+/* @font-face {
   font-family: 'Satoshi';
   src: url('../assets/fonts/Satoshi-Medium.woff2') format('woff2');
   font-weight: 500;
@@ -54,39 +56,24 @@
   src: url('../assets/fonts/Satoshi-Black.woff2') format('woff2');
   font-weight: 900;
   font-display: swap;
-}
+} */
 
 /* ── Switzer ──────────────────────────────────────────── */
-@font-face {
+/* @font-face {
   font-family: 'Switzer';
-  src: url('../assets/fonts/Switzer-Regular.woff2') format('woff2');
-  font-weight: 400;
+  src: url('../assets/fonts/Switzer-Variable.ttf') format('truetype'); 
+  font-weight: 100 900;
+  font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Switzer';
-  src: url('../assets/fonts/Switzer-Medium.woff2') format('woff2');
-  font-weight: 500;
+  src: url('../assets/fonts/Switzer-VariableItalic.ttf') format('truetype'); 
+  font-weight: 100 900;
+  font-style: italic;
   font-display: swap;
-}
-@font-face {
-  font-family: 'Switzer';
-  src: url('../assets/fonts/Switzer-Semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Switzer';
-  src: url('../assets/fonts/Switzer-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Switzer';
-  src: url('../assets/fonts/Switzer-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-display: swap;
-}
+}  */
 
 /* ── Utility Classes ──────────────────────────────────── */
 @layer utilities {

@@ -68,7 +68,7 @@ function Sidebar({ role }) {
     >
 
       {/* Logo */}
-      <div className="flex items-center justify-between px-4 py-6 mb-4 shrink-0">
+      <div className="font-technor flex items-center justify-between px-4 py-6 mb-4 shrink-0">
         <div className="flex items-center gap-3">
           {/* Logo circle always visible */}
           <div className="flex items-center justify-center w-8 h-8 rounded-lg  shrink-0">
@@ -112,6 +112,7 @@ function Sidebar({ role }) {
       <div className="mb-6 shrink-0">
         <p
           className="
+          font-switzer
             text-[#b2beb5] text-xs uppercase tracking-wider
             px-4 mb-3
             transition-all duration-300 ease-in-out
@@ -206,6 +207,7 @@ function Sidebar({ role }) {
       <div className="shrink-0">
         <p
           className="
+            font-switzer
             text-[#b2beb5] text-xs uppercase tracking-wider
             px-4
             transition-all duration-300 ease-in-out
