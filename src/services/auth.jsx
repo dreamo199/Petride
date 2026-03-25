@@ -3,13 +3,13 @@ import api from './api';
 export const authService = {
 
   async getUserProfile() {
-          const response = await api.get(`/api/v1/customers/me/`);
+          const response = await api.get(`/customers/me/`);
           return response.data;
       },
   
   async login(username, password) {
     try{
-      const response = await api.post('/api/v1/login/', { username, password });
+      const response = await api.post('/login/', { username, password });
       localStorage.setItem('accessToken', response.data.access);
       localStorage.setItem('refreshToken', response.data.refresh);
 
